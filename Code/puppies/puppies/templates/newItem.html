@@ -1,0 +1,90 @@
+{% extends 'layout.html' %}
+{% block styles %}
+    {{ super() }}
+    <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css"
+          rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <h2>Addind new {{ nameOfEntity }}:</h2>
+    <div>
+        <form method="post" action="/{{ nameOfEntity }}/new">
+            <input hidden name="nameOfEntity" value="{{ nameOfEntity }}">
+            <div class="form-group col-md-6">
+                <label for="inputItemName">{{ nameOfEntity|capitalize }} name:</label>
+                <input type="text" class="form-control" id="inputItemName" placeholder="{{ nameOfEntity }}"
+                       name="itemName" required>
+            </div>
+
+            {# Fields for puppies #}
+            {% if nameOfEntity == 'puppy' %}
+                <div class="form-group col-md-6">
+                    <label for="inputPuppyGender">Puppy gender:</label>
+                    <select class="form-control" id="inputPuppyGender" name="puppyGender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputDateOfBirth">Puppy date of birth:</label>
+                    <input type="date" class="form-control" id="inputDateOfBirth" name="dateOfBirth">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPuppyWeight">Puppy weight:</label>
+                    <input type="number" class="form-control" id="inputPuppyWeight" name="puppyWeight" value="0">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPuppyPicture">Puppy picture:</label>
+                    <input type="text" class="form-control" id="inputPuppyPicture" name="puppyPicture">
+                </div>
+
+                {# Fields for shelters #}
+            {% elif nameOfEntity == 'shelter' %}
+                <div class="form-group col-md-6">
+                    <label for="inputShelterAddress">Shelter address:</label>
+                    <input type="text" class="form-control" id="inputShelterAddress" name="shelterAddress">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputShelterCity">Shelter city:</label>
+                    <input type="text" class="form-control" id="inputShelterCity" name="shelterCity">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputShelterZip">Shelter zip:</label>
+                    <input type="text" class="form-control" id="inputShelterZip" name="shelterZip">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputShelterState">Shelter state:</label>
+                    <input type="text" class="form-control" id="inputShelterZip" name="shelterState">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputShelterURL">Shelter web site:</label>
+                    <input type="url" class="form-control" id="inputShelterURL" name="shelterURL">
+                </div>
+
+            {% elif nameOfEntity == 'owner' %}
+            {% endif %}
+
+            <div class="clearfix"></div>
+
+            <button type="button" class="btn btn-default" onclick='history.back()'>Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+
+    {% if nameOfEntity == 'puppy' %}
+        <script type="text/javascript">
+            $(function () {
+                $('#inputDateOfBirth').datetimepicker({format: 'YYYY-MM-DD'});
+            });
+        </script>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2>List of {{ pluralNameOfItems }}:</h2>
+    <h4 class="add_item"><a href="/{{ nameOfItem }}/new">Add {{ nameOfItem }}</a></h4>
+    <div class="row my-panels">
+        {% for item in listOfItems %}
+            <div class="col-md-6">
+                <div>
+                    <div class="pull-left">
+                        {{ item.name }}
+                    </div>
+                    <div class="pull-right">
+                        <a href="/{{ nameOfItem }}/{{ item.id }}/edit">Edit</a> | <a href="/{{ nameOfItem }}/{{ item.id }}/delete">Delete</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

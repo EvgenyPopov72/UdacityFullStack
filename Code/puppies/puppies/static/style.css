@@ -1,0 +1,21 @@
+.logo {
+    width: 20%;
+}
+
+.my-panels div {
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.my-panels > div > div {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    line-height: 20px;
+    /*margin-bottom: 10px;*/
+    min-height: 1px;
+    font-size: 14px;
+}
+
+.my-panels div.clearfix{
+    margin-bottom: -10px;
+}

@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h2>Deleting {{ Item.name }}:</h2>
+    <form method="post" action="{{ actionPath }}">
+        <input hidden name="nameOfItem" value="{{ Item.name }}">
+        <button type="button" class="btn btn-default" onclick='history.back()'>Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
