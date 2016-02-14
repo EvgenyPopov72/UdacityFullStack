@@ -14,8 +14,7 @@ def getItemsList(items):
     return session.query(items).order_by(items.name).all()
 
 
-def addNewItem(item):
-    # newItem = item(name=request.form['itemName'], gender=request.form['puppyGender'])
+def addUpdateItem(item):
     session.add(item)
     return session.commit()
 

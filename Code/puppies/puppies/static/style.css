@@ -19,3 +19,8 @@
 .my-panels div.clearfix{
     margin-bottom: -10px;
 }
+
+img.item-picture{
+    height: 64px;
+    max-width: 64px;
+}

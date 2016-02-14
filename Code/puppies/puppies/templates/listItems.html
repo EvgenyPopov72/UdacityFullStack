@@ -8,7 +8,8 @@
             <div class="col-md-6">
                 <div>
                     <div class="pull-left">
-                        {{ item.name }}
+                        <a href="/{{ nameOfItem }}/{{ item.id }}/edit">{{ item.name }}</a>
+                        {% if nameOfItem == 'puppy' %}<img src="{{ item.picture }}" class="item-picture">{% endif %}
                     </div>
                     <div class="pull-right">
                         <a href="/{{ nameOfItem }}/{{ item.id }}/edit">Edit</a> | <a href="/{{ nameOfItem }}/{{ item.id }}/delete">Delete</a>

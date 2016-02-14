@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+    {# TODO Make modal dialog #}
     <h2>Deleting {{ Item.name }}:</h2>
     <form method="post" action="{{ actionPath }}">
         <input hidden name="nameOfItem" value="{{ Item.name }}">
