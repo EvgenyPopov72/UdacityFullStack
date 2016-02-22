@@ -1,13 +1,10 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import Base, Shelter, Puppy, Owner, entities
-from flask import request
+from models import entities, session
 
 # engine = create_engine('sqlite:///puppyshelter.db')
-engine = create_engine('postgresql://postgres:postgres@localhost/puppies')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
+# engine = create_engine('postgresql://postgres:postgres@localhost/puppies')
+# Base.metadata.bind = engine
+# DBSession = sessionmaker(bind=engine)
+# session = DBSession()
 
 
 def getItemsList(items):

@@ -40,7 +40,6 @@ def listOwners():
 def newEntityItem(entityName):
     if entityName not in entytiesList:
         return redirect('/')
-    # entityName = request.base_url.split('/')[3]
     if request.method == 'POST':
         reqForm = request.form
         if reqForm['nameOfEntity'] in entytiesList:
