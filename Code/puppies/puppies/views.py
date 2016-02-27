@@ -3,8 +3,6 @@ from puppies import app
 from controllers import getItemsList, addUpdateItem, getItem, deleteExistingItem, getClassByName, getPathByName
 from models import Base, Shelter, Puppy, Owner, entities
 from dateutil import parser
-from time import strftime
-from datetime import datetime
 
 entytiesList = ['puppy', 'shelter', 'owner']
 
@@ -21,17 +19,20 @@ def pageNotFound(e):
 
 @app.route('/puppies')
 def listPuppies():
-    return render_template('listPuppies.html', listOfItems=getItemsList(Puppy))
+    filterString = request.args.get('filter')
+    return render_template('listPuppies.html', listOfItems=getItemsList(Puppy, filterString))
 
 
 @app.route('/shelters')
 def listShelters():
-    return render_template('listShelters.html', listOfItems=getItemsList(Shelter))
+    filterString = request.args.get('filter')
+    return render_template('listShelters.html', listOfItems=getItemsList(Shelter, filterString))
 
 
 @app.route('/owners')
 def listOwners():
-    return render_template('listOwners.html', listOfItems=getItemsList(Owner))
+    filterString = request.args.get('filter')
+    return render_template('listOwners.html', listOfItems=getItemsList(Owner, filterString))
 
 
 # @app.route('/puppy/new', methods=['GET', 'POST'])
@@ -54,10 +55,14 @@ def newEntityItem(entityName):
                 newItem = Shelter(name=reqForm['itemName'], address=reqForm['shelterAddress'],
                                   city=reqForm['shelterCity'], zipCode=reqForm['shelterZip'],
                                   state=reqForm['shelterState'], website=reqForm['shelterURL'])
-            # TODO Add Owner
+            elif entityName == 'owner':
+                newItem = Owner(name=reqForm['itemName'], address=reqForm['ownerAddress'])
+
             addUpdateItem(newItem)
         return redirect(getPathByName(entityName))
-    return render_template('newItem.html', nameOfEntity=entityName, shelters=getItemsList(Shelter))
+    # return render_template('newItem.html', nameOfEntity=entityName, shelters=getItemsList(Shelter), item=None)
+    return render_template('editItem.html', nameOfEntity=entityName, shelters=getItemsList(Shelter), item=None,
+                           operation='new')
 
 
 @app.route('/<string:entityName>/<int:id>/edit', methods=['GET', 'POST'])
@@ -82,7 +87,9 @@ def editEntityItem(entityName, id):
                 item.zipCode = reqForm['shelterZip']
                 item.state = reqForm['shelterState']
                 item.website = reqForm['shelterURL']
-            # TODO Add Owner
+            elif entityName == 'owner':
+                item.address = reqForm['ownerAddress']
+
             addUpdateItem(item)
         return redirect(getPathByName(entityName))
     return render_template('editItem.html', nameOfEntity=entityName, item=item, shelters=getItemsList(Shelter))

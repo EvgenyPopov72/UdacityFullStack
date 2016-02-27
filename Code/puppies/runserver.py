@@ -1,6 +1,4 @@
-from puppies import app, manager
-from flask.ext.script import Manager, Server
-import os
+from puppies import manager
 
 # manager.run()
 

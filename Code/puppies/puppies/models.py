@@ -4,8 +4,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Date, Numeric, creat
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker
-
-# from puppies import app
+from puppies import app
 
 Base = declarative_base()
 
@@ -42,7 +41,7 @@ class Puppy(Base):
     shelter_id = Column(Integer, ForeignKey('shelter.id'))
     shelter = relationship(Shelter)
 
-    owner = relationship('Owner', secondary='association', backref='puppy')
+    owner_adopter = relationship('Owner', secondary='association', backref='puppy')
 
     def __repr__(self):
         return '<Puppy %s' % self.name
@@ -53,7 +52,7 @@ class Owner(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     address = Column(String(250))
-    puppy = relationship('Puppy', secondary='association', backref='owner')
+    puppy_adopted = relationship('Puppy', secondary='association', backref='owner')
 
     def __repr__(self):
         return '<Owner %s' % self.name
@@ -65,8 +64,8 @@ entities = {
     'owner': Owner
 }
 
-database_uri = os.environ.get('DATABASE_URL')
-# database_uri = app.config['SQLALCHEMY_DATABASE_URI']
+
+database_uri = app.config['SQLALCHEMY_DATABASE_URI']
 engine = create_engine(database_uri)
 # Base.metadata.create_all(engine)
 

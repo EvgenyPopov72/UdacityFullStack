@@ -1,13 +1,10 @@
 from models import entities, session
 
-# engine = create_engine('sqlite:///puppyshelter.db')
-# engine = create_engine('postgresql://postgres:postgres@localhost/puppies')
-# Base.metadata.bind = engine
-# DBSession = sessionmaker(bind=engine)
-# session = DBSession()
 
-
-def getItemsList(items):
+def getItemsList(items, filterParam=''):
+    # TODO add check for sql injection
+    if filterParam:
+        return session.query(items).filter(items.name.like('%'+filterParam+'%')).order_by(items.name).all()
     return session.query(items).order_by(items.name).all()
 
 

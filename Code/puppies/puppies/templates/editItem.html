@@ -6,77 +6,104 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Edit {{ nameOfEntity }}:</h2>
+    {% if operation == 'new' %}
+        <h2>New {{ nameOfEntity }}:</h2>
+        {% set operationCommitText = 'Create' %}
+    {% else %}
+        <h2>Edit {{ nameOfEntity }}:</h2>
+        {% set operationCommitText = 'Save' %}
+    {% endif %}
     <div>
-        <form method="post" action="/{{ nameOfEntity }}/{{ item.id }}/edit">
-            <input hidden name="nameOfEntity" value="{{ nameOfEntity }}">
+        {% if operation == 'new' %}
+            <form method="post" action="/{{ nameOfEntity }}/new">
+        {% else %}
+            <form method="post" action="/{{ nameOfEntity }}/{{ item.id }}/edit">
+        {% endif %}
+        <input hidden name="nameOfEntity" value="{{ nameOfEntity }}">
+        <div class="form-group col-md-6">
+            <label for="inputItemName">{{ nameOfEntity|capitalize }} name:</label>
+            <input type="text" class="form-control" id="inputItemName" placeholder="{{ nameOfEntity }}"
+                   name="itemName" required value="{{ item.name }}">
+        </div>
+
+        {# Fields for puppies #}
+        {% if nameOfEntity == 'puppy' %}
             <div class="form-group col-md-6">
-                <label for="inputItemName">{{ nameOfEntity|capitalize }} name:</label>
-                <input type="text" class="form-control" id="inputItemName" placeholder="{{ nameOfEntity }}"
-                       name="itemName" required value="{{ item.name }}">
+                <label for="inputPuppyGender">Gender:</label>
+                <select class="form-control" id="inputPuppyGender" name="puppyGender" required>
+                    <option value="male" {% if item.gender == 'male' %} selected {% endif %}>Male</option>
+                    <option value="female"{% if item.gender == 'female' %} selected {% endif %}>Female</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputDateOfBirth">Date of birth:</label>
+                <input type="date" class="form-control" id="inputDateOfBirth" name="dateOfBirth" required
+                       value="{{ item.dateOfBirth }}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputPuppyWeight">Weight:</label>
+                <input type="number" class="form-control" id="inputPuppyWeight" name="puppyWeight"
+                       value="{{ item.weight }}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputPuppyPicture">Picture:</label>
+                <input type="text" class="form-control" id="inputPuppyPicture" name="puppyPicture"
+                       value="{{ item.picture }}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputPuppyShelter">Shelter:</label>
+                <select class="form-control" id="inputPuppyShelter" name="puppyShelter" required>
+                    <option></option>
+                    {% for shelter in shelters %}
+                        <option {% if shelter.id == item.shelter_id %} selected {% endif %}
+                                                                       value="{{ shelter.id }}">{{ shelter.name }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
-            {# Fields for puppies #}
-            {% if nameOfEntity == 'puppy' %}
-                <div class="form-group col-md-6">
-                    <label for="inputPuppyGender">Gender:</label>
-                    <select class="form-control" id="inputPuppyGender" name="puppyGender" required>
-                        <option value="male" {% if item.gender == 'male' %} selected {% endif %}>Male</option>
-                        <option value="female"{% if item.gender == 'female' %} selected {% endif %}>Female</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputDateOfBirth">Date of birth:</label>
-                    <input type="date" class="form-control" id="inputDateOfBirth" name="dateOfBirth" required value="{{ item.dateOfBirth }}">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputPuppyWeight">Weight:</label>
-                    <input type="number" class="form-control" id="inputPuppyWeight" name="puppyWeight" value="{{ item.weight }}" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputPuppyPicture">Picture:</label>
-                    <input type="text" class="form-control" id="inputPuppyPicture" name="puppyPicture" value="{{ item.picture }}">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputPuppyShelter">Shelter:</label>
-                    <select class="form-control" id="inputPuppyShelter" name="puppyShelter" required>
-                        <option></option>
-                        {% for shelter in shelters %}
-                            <option {% if shelter.id == item.shelter_id %} selected {% endif %} value="{{ shelter.id }}">{{ shelter.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
             {# Fields for shelters #}
-            {% elif nameOfEntity == 'shelter' %}
+        {% elif nameOfEntity == 'shelter' %}
+            <div class="form-group col-md-6">
+                <label for="inputShelterAddress">Shelter address:</label>
+                <input type="text" class="form-control" id="inputShelterAddress" name="shelterAddress"
+                       value="{{ item.address }}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputShelterCity">Shelter city:</label>
+                <input type="text" class="form-control" id="inputShelterCity" name="shelterCity"
+                       value="{{ item.city }}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputShelterZip">Shelter zip:</label>
+                <input type="text" class="form-control" id="inputShelterZip" name="shelterZip"
+                       value="{{ item.zipCode }}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputShelterState">Shelter state:</label>
+                <input type="text" class="form-control" id="inputShelterState" name="shelterState"
+                       value="{{ item.state }}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputShelterURL">Shelter web site:</label>
+                <input type="url" class="form-control" id="inputShelterURL" name="shelterURL"
+                       value="{{ item.website }}">
+            </div>
+
+        {% elif nameOfEntity == 'owner' %}
+            <div class="owner_fields">
                 <div class="form-group col-md-6">
-                    <label for="inputShelterAddress">Shelter address:</label>
-                    <input type="text" class="form-control" id="inputShelterAddress" name="shelterAddress" value="{{ item.address }}">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputShelterCity">Shelter city:</label>
-                    <input type="text" class="form-control" id="inputShelterCity" name="shelterCity" value="{{ item.city }}">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputShelterZip">Shelter zip:</label>
-                    <input type="text" class="form-control" id="inputShelterZip" name="shelterZip" value="{{ item.zipCode }}">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputShelterState">Shelter state:</label>
-                    <input type="text" class="form-control" id="inputShelterState" name="shelterState" value="{{ item.state }}">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="inputShelterURL">Shelter web site:</label>
-                    <input type="url" class="form-control" id="inputShelterURL" name="shelterURL" value="{{ item.website }}">
+                    <label for="inputOwnerAddress">Owner address:</label>
+                    <input type="text" class="form-control" id="inputOwnerAddress" name="ownerAddress"
+                           value="{{ item.address }}">
                 </div>
 
-            {% elif nameOfEntity == 'owner' %}
-            {% endif %}
+            </div>
+        {% endif %}
 
-            <div class="clearfix"></div>
+        <div class="clearfix"></div>
 
-            <button type="button" class="btn btn-default" onclick='history.back()'>Cancel</button>
-            <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-default" onclick='history.back()'>Cancel</button>
+        <button type="submit" class="btn btn-primary">{{ operationCommitText }}</button>
         </form>
     </div>
 
@@ -93,6 +120,10 @@
             $(function () {
                 $('#inputDateOfBirth').datetimepicker({format: 'YYYY-MM-DD'});
             });
+
+
+
+
         </script>
     {% endif %}
 
